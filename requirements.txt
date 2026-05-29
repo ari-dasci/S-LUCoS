@@ -1,0 +1,35 @@
+# Python dependencies installable from PyPI.
+# Local dependencies under libs/ are installed by scripts/setup_external_libs.sh.
+
+# Core scientific stack
+numpy>=1.24,<2
+pandas>=2.0.0,<3
+scipy>=1.9.0
+scikit-learn>=1.0.0
+xgboost>=1.7.0
+
+# Experiment configuration, datasets and result files
+omegaconf>=2.1.0
+openml>=0.10.0
+openpyxl>=3.0.0
+tqdm>=4.60.0
+
+# PyTorch-based encoders/evaluators
+torch>=2.0.0
+einops>=0.7.0
+tabicl>=2.1.1
+tabpfn>=7.0.0
+
+# Instance selection methods
+scikit-learn-extra>=0.3.0
+nvidia-ml-py>=13.0.0
+psutil>=5.9.0
+
+# Plotting and analysis utilities used by this experiment package
+matplotlib>=3.5.0
+scikit-posthocs>=0.12.0
+
+# Logging/metrics used by auxiliary code and local submodules
+wandb>=0.15.0
+torchmetrics>=1.0.0
+transformers>=4.30.0

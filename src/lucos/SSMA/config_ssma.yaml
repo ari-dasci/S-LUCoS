@@ -1,0 +1,26 @@
+benchmark:
+  suitename: OpenML-CC18
+  max_classes: 10
+  only_classification: true
+  ascending: false
+
+ssma:
+  # The first value sets the maximum initial size from which reduction starts.
+  alphas: [0.5]
+  pop_size: 20
+  p_cross: 0.7
+  p_mut: 0.01
+  local_search_attempts: 10
+  patience: 70
+  steps_per_alpha: 500
+  load_until_step: null
+  reset_steps_without_improvement: false
+
+experiment:
+  sizes_we_want_to_reduce_to: [250, 180, 100, 50, 20, 10]
+  ssma_run: 1
+  folds_to_run: [0]
+  val_size_split: 0.2
+  train_val_split_random_state: 42
+  tabpfn_device: cuda
+  tabpfn_n_estimators: 8

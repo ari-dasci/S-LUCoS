@@ -1,0 +1,66 @@
+benchmark:
+  suitename:  OpenML-CC18 # [OpenML-CC18, tabarena-v0.1]
+  lite: false
+  impute_nan: true
+  only_classification: true
+  max_classes: 10
+  ascending: true
+
+instance_selection:
+  - instance_selection_space:
+      target: lucos.unsupervised_context_selection.encoders.TabClustPFNEncoder
+    undersampling_methods:
+      - target: lucos.unsupervised_context_selection.instance_selection.KMedoidsUnderSampler
+        n_runs: 5
+        params:
+          init: k-medoids++
+          metric: euclidean
+          save_distance_matrices: false
+      - target: lucos.unsupervised_context_selection.instance_selection.KMedoidsUnderSampler
+        n_runs: 5
+        params:
+          init: k-medoids++
+          metric: cosine
+          save_distance_matrices: false
+      - target: lucos.unsupervised_context_selection.instance_selection.RDSSUnderSampler
+        n_runs: 1
+      - target: lucos.unsupervised_context_selection.instance_selection.ZCoreUnderSampler
+        n_runs: 1
+
+  - instance_selection_space:
+      target: lucos.unsupervised_context_selection.encoders.OriginalSpaceEncoder
+    undersampling_methods:
+      - target: lucos.unsupervised_context_selection.instance_selection.RandomUnderSampler
+        n_runs: 5
+        params:
+          mode: Unsupervised
+      - target: lucos.unsupervised_context_selection.instance_selection.KMedoidsUnderSampler
+        n_runs: 5
+        params:
+          init: k-medoids++
+          metric: euclidean
+          save_distance_matrices: false
+      - target: lucos.unsupervised_context_selection.instance_selection.KMedoidsUnderSampler
+        n_runs: 5
+        params:
+          init: k-medoids++
+          metric: cosine
+          save_distance_matrices: false
+      - target: lucos.unsupervised_context_selection.instance_selection.RDSSUnderSampler
+        n_runs: 1
+      - target: lucos.unsupervised_context_selection.instance_selection.ZCoreUnderSampler
+        n_runs: 1
+
+original_space_evaluation:
+  - target: lucos.unsupervised_context_selection.evaluators.TabPFNv2_5
+  - target: lucos.unsupervised_context_selection.evaluators.TabPFNv3  
+  - target: lucos.unsupervised_context_selection.evaluators.TabICLv2
+  #- target: lucos.unsupervised_context_selection.evaluators.UCD
+
+experiment:
+  exp_id: "openml"
+  verbose: true
+  device: default
+  save_results_every_appends: 3
+  subsampler_train_percentages: [] # Previously [50, 25, 10, 5, 2]. Now restricted to the few-shot regime.
+  subsampler_nclasses_multipliers: [1, 2, 4, 8, 16, 32]    

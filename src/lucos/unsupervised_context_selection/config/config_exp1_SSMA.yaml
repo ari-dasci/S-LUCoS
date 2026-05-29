@@ -1,0 +1,33 @@
+benchmark:
+  suitename:  OpenML-CC18 # [OpenML-CC18, tabarena-v0.1]
+  lite: false
+  impute_nan: true
+  only_classification: true
+  max_classes: 10
+  ascending: true
+
+instance_selection:
+
+  - instance_selection_space:
+      target: lucos.unsupervised_context_selection.encoders.OriginalSpaceEncoder
+    undersampling_methods:
+      - target: lucos.unsupervised_context_selection.instance_selection.RandomUnderSampler
+        n_runs: 5
+        params:
+          mode: Balanced
+      - target: lucos.unsupervised_context_selection.instance_selection.SSMAUnderSampler
+        n_runs: 1
+        base_seed: 1
+
+original_space_evaluation:
+  - target: lucos.unsupervised_context_selection.evaluators.KNN
+  - target: lucos.unsupervised_context_selection.evaluators.XGBoost
+  - target: lucos.unsupervised_context_selection.evaluators.TabPFNv2_5
+
+
+experiment:
+  exp_id: "openml"
+  verbose: true
+  device: default
+  subsampler_train_percentages: [] # Previously [50, 25, 10, 5, 2]. Now restricted to the few-shot regime.
+  subsampler_nclasses_multipliers: [1, 2, 4, 8, 16, 32]    

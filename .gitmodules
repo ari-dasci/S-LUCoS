@@ -1,0 +1,9 @@
+[submodule "libs/TabClustPFN"]
+	path = libs/TabClustPFN
+	url = https://github.com/Tianqi-Zhao/TabClustPFN
+[submodule "libs/RDSS"]
+	path = libs/RDSS
+	url = https://github.com/YanhuiAILab/RDSS.git
+[submodule "libs/zcore"]
+	path = libs/zcore
+	url = https://github.com/voxel51/zcore

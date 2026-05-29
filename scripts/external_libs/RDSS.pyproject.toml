@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rdss"
+version = "0.1.0"
+description = "Representative and Diverse Sample Selection (RDSS)"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { file = "LICENSE" }
+authors = [
+  { name = "Qian Shao" },
+  { name = "Jiangrui Kang" },
+  { name = "Qiyuan Chen" },
+  { name = "Zepeng Li" },
+  { name = "Hongxia Xu" },
+  { name = "Yiwen Cao" },
+  { name = "Jiajuan Liang" },
+  { name = "Jian Wu" }
+]
+dependencies = [
+  "numpy>=1.24.4",
+  "scikit-learn>=1.0.2",
+  "scipy>=1.10.0",
+  "tqdm>=4.64.0"
+]
+
+[tool.setuptools]
+py-modules = [
+  "RDSS"
+]

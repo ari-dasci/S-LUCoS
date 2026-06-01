@@ -17,19 +17,27 @@ matplotlib.rcParams["mathtext.fontset"] = "stix"
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 
-from lucos.unsupervised_context_selection.agg_results import unsupervised_context_selection_agg_results as agg_results
-from lucos.unsupervised_context_selection.agg_results import unsupervised_context_selection_create_plots as create_plots
+from lucos.unsupervised_context_selection.agg_results_and_plot.aggregate_results import (
+    C_MULTIPLIERS,
+    BASELINE_COLUMN_PREFIX,
+    read_aggregated_results,
+)
+from lucos.unsupervised_context_selection.agg_results_and_plot.create_plots import (
+    build_plot_output_path,
+    metric_column_getter,
+)
+
 
 # ── config ──────────────────────────────────────────────────────────
-C_BUDGETS   = list(agg_results.C_MULTIPLIERS)
+C_BUDGETS   = list(C_MULTIPLIERS)
 PRIMARY     = "AUC"
 EVALUATOR   = "TabPFNv2_5"
 PAPER_SECTION = "paper_tables_and_figures"
-OUT = create_plots.build_plot_output_path(PAPER_SECTION, ".placeholder").parent
+OUT = build_plot_output_path(PAPER_SECTION, ".placeholder").parent
 
 
 def paper_output_path(suffix: str) -> object:
-    return create_plots.build_plot_output_path(PAPER_SECTION, suffix)
+    return build_plot_output_path(PAPER_SECTION, suffix)
 
 # Paper aliases over the current aggregated-result column names. The final
 # figures keep the old paper labels while reading the current folder layout.
@@ -70,14 +78,14 @@ def build_wide_from_aggregated(agg_df: pd.DataFrame, metric: str) -> pd.DataFram
 
     for c in C_BUDGETS:
         for space, method, label in METHODS:
-            source_col = create_plots.metric_column_getter(c, space, method, EVALUATOR, metric)
+            source_col = metric_column_getter(c, space, method, EVALUATOR, metric)
             target_col = f"{c}C_{label}_{metric}"
             wide[target_col] = pd.to_numeric(agg_df[source_col], errors="coerce") if source_col in agg_df.columns else np.nan
 
-    paper_baseline_col = f"{agg_results.BASELINE_COLUMN_PREFIX}{EVALUATOR}_{metric}"
+    paper_baseline_col = f"{BASELINE_COLUMN_PREFIX}{EVALUATOR}_{metric}"
     baseline_source_col = paper_baseline_col
     if baseline_source_col not in agg_df.columns:
-        baseline_source_col = f"{agg_results.BASELINE_COLUMN_PREFIX}{metric}"
+        baseline_source_col = f"{BASELINE_COLUMN_PREFIX}{metric}"
     if baseline_source_col in agg_df.columns:
         wide[paper_baseline_col] = pd.to_numeric(agg_df[baseline_source_col], errors="coerce")
 
@@ -933,8 +941,8 @@ def generate_figure2_ssma(agg_ssma):
     """
     summary_rows = []
     for c in C_BUDGETS:
-        ssma_col = create_plots.metric_column_getter(c, "OriginalSpace", "SSMAUnderSampler", EVALUATOR, PRIMARY)
-        rand_col = create_plots.metric_column_getter(c, "OriginalSpace", "RandomUnderSamplerBalanced", EVALUATOR, PRIMARY)
+        ssma_col = metric_column_getter(c, "OriginalSpace", "SSMAUnderSampler", EVALUATOR, PRIMARY)
+        rand_col = metric_column_getter(c, "OriginalSpace", "RandomUnderSamplerBalanced", EVALUATOR, PRIMARY)
         if ssma_col not in agg_ssma.columns or rand_col not in agg_ssma.columns:
             continue
         sub = agg_ssma[[ssma_col, rand_col]].apply(pd.to_numeric, errors="coerce").dropna()
@@ -967,8 +975,8 @@ def main():
 
     # ── load ──
     print("\n[1/3] Loading aggregated data ...")
-    agg_lucos = agg_results.read_aggregated_results("LUCoS")
-    agg_ssma = agg_results.read_aggregated_results("SSMA")
+    agg_lucos = read_aggregated_results("LUCoS")
+    agg_ssma = read_aggregated_results("SSMA")
     print(f"  LUCoS: {len(agg_lucos):,} datasets, {len(agg_lucos.columns)} columns")
     print(f"  SSMA:  {len(agg_ssma):,} datasets, {len(agg_ssma.columns)} columns")
 

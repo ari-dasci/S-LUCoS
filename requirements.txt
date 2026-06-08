@@ -18,7 +18,7 @@ tqdm>=4.60.0
 torch>=2.0.0
 einops>=0.7.0
 tabicl>=2.1.1
-tabpfn>=7.0.0
+tabpfn>=8.0.0
 
 # Instance selection methods
 scikit-learn-extra>=0.3.0
